@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function TodoForm({ onAdd }: Props) {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState("Initial title");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
