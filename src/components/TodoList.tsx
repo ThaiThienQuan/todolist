@@ -1,38 +1,20 @@
-import { useState } from "react";
+import { Todo } from "../types/todo";
+import TodoItem from "./TodoItem";
 
-export default function Todolist() {
-  const [inputValue, setinputValue] = useState("");
-  const [task, settask] = useState(["fbhedkjfb", "èhudshf"]);
-  const handleChange = (e) => {
-    setinputValue(e.target.value);
-  };
-  const addTodo = () => {
-    settask([...task, inputValue.trim()]);
-    setinputValue("");
-  };
-  const deleteTask = (i) => {
-   const newtodo= task.filter((_, it) => it !== i);
-    settask(newtodo);
-  };
+interface Props {
+  todos: Todo[];
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+export default function TodoList({ todos, onToggle, onDelete }: Props) {
+  if (todos.length === 0) return <p className="text-gray-500 mt-4">No tasks found.</p>;
+
   return (
-    <>
-      <div className="container mt-5">
-        <input
-          type="text"
-          onChange={handleChange}
-          value={inputValue}
-          placeholder="Add task"
-        />
-        <button onClick={addTodo}>Add todo</button>
-      </div>
-      <ul>
-        {task.map((task, i) => (
-          <li key={i}>
-            {task}
-            <button onClick={() => deleteTask(i)}></button>
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className="mt-4">
+      {todos.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} onToggle={onToggle} onDelete={onDelete} />
+      ))}
+    </ul>
   );
 }
