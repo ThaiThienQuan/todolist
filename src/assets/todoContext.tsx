@@ -1,7 +1,9 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-const todoContext= createContext({});
+const todoContext= createContext({todo:'id1',handleChange:()=>{}});
 export const todoProvider=({children}) =>{
-    return(<todoContext.Provider value={}>{children}</todoContext.Provider>)
+    const [todo, setTodo] = useState('id1');
+    const handleChange=()=>{}
+    return(<todoContext.Provider value={{todo,handleChange}}>{children}</todoContext.Provider>)
 }
 export default todoContext;
