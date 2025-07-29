@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Todo } from "./types/todo";
+
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import { v4 as uuidv4 } from "uuid";
+import type { Todo } from "./types/todo";
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
