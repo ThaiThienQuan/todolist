@@ -1,45 +1,60 @@
-import { useState, useEffect } from "react";
-
+import { useEffect, useState } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
-import { v4 as uuidv4 } from "uuid";
-import type { Todo } from "./types/todo";
-function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
 
-  useEffect(() => {
+function App() {
+  const [todos, setTodos] = useState(() => {
     const saved = localStorage.getItem("todos");
-    if (saved) setTodos(JSON.parse(saved));
-  }, []);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  const addTodo = (title: string) => {
-    const newTodo: Todo = {
-      id: uuidv4(),
-      title,
+  const addTodo = (text) => {
+    const newTodo = {
+      id: Date.now(),
+      text,
       completed: false,
     };
     setTodos([newTodo, ...todos]);
   };
 
-  const toggleTodo = (id: string) => {
-    setTodos((prev) =>
-      prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+  const toggleComplete = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
     );
   };
 
-  const deleteTodo = (id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
+    return true;
+  });
+
   return (
-    <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow-lg rounded">
-      <h1 className="text-2xl font-bold text-center mb-4">📋 My Todo List</h1>
-      <TodoForm onAdd={addTodo} />
-      <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+    <div className="container">
+      <h1>Advanced Todo List</h1>
+      <TodoForm addTodo={addTodo} />
+      <div>
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("active")}>Active</button>
+        <button onClick={() => setFilter("completed")}>Completed</button>
+      </div>
+      <TodoList
+        todos={filteredTodos}
+        toggleComplete={toggleComplete}
+        deleteTodo={deleteTodo}
+      />
     </div>
   );
 }
