@@ -2,14 +2,21 @@ import { useCallback, useMemo, useState } from "react";
 
 export default function TodoList() {
   const [todo, setTodo] = useState({
-    id:'',
-    todo:'',
-    checked:true
+    id: "",
+    todo: "",
+    checked: true,
   });
   const [loading, setloading] = useState(true);
   const [newTodo, setNewTodo] = useState("");
   const [search, setSearch] = useState("");
-  
+  useEffect(() => {
+    fetch("")
+    .then((response) => response.json());
+    .then((data)=>{
+      setTodo(data)
+      setloading(false);
+    })
+  }, []);
 
   const removetodo = (i) => {
     const newtodos = todo.filter((_, it) => it !== i);
@@ -48,4 +55,7 @@ export default function TodoList() {
       </div>
     </>
   );
+}
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error("Function not implemented.");
 }
