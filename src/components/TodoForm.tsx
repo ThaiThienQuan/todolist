@@ -1,7 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
 
 export default function TodoList() {
-  const [todo, setTodo] = useState(["Learn React ", "Build project"]);
+  const [todo, setTodo] = useState({
+    id:'',
+    todo:'',
+    checked:true
+  });
+  const [loading, setloading] = useState(true);
   const [newTodo, setNewTodo] = useState("");
   const [search, setSearch] = useState("");
   

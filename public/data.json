@@ -1,0 +1,5 @@
+[
+    {"id":"01","todo":"pet dog","checked":true},
+    {"id":"02","todo":"pet cat","checked":false},
+    {"id":"03","todo":"go to school","checked":true}
+]
