@@ -1,17 +1,17 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function TodoList() {
-  const [todo, setTodo] = useState({
+  const [todo, setTodo] = useState([]);
+  const [loading, setloading] = useState(true);
+  const [newTodo, setNewTodo] = useState({
     id: "",
-    todo: "",
+    job: "",
     checked: true,
   });
-  const [loading, setloading] = useState(true);
-  const [newTodo, setNewTodo] = useState("");
   const [search, setSearch] = useState("");
   useEffect(() => {
-    fetch("")
-    .then((response) => response.json());
+    fetch("data.json")
+    .then((response) => response.json())
     .then((data)=>{
       setTodo(data)
       setloading(false);
@@ -31,11 +31,6 @@ export default function TodoList() {
   const handleChange = useCallback((e) => {
     setNewTodo(e.target.value);
   }, []);
-  const filtertodo = useMemo(() => {
-    return todo.filter((e) =>
-      `${e.todo}`.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [todo, search]);
 
   return (
     <>
@@ -43,11 +38,10 @@ export default function TodoList() {
         <h1>Todo list</h1>
         <input type="text" value={newTodo} onChange={handleChange} />
         <button onClick={addTodo}>Add todo</button>
-        <input type="text" value={search} onChange={handleChange} />
         <ul>
-          {filtertodo.map((todo, i) => (
+          {todo.map((todo, i) => (
             <li key={i}>
-              {todo}
+              {todo.id} - {todo.job}- {todo.checked?"Done":"Not done"}
               <button onClick={() => removetodo(i)}>remove</button>
             </li>
           ))}
@@ -55,7 +49,4 @@ export default function TodoList() {
       </div>
     </>
   );
-}
-function useEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
 }
